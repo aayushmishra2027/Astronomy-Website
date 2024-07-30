@@ -1,68 +1,58 @@
-// 3D Black Hole using Three.js
-function create3DObject(containerId, color) {
-    const container = document.getElementById(containerId);
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+document.addEventListener('DOMContentLoaded', function() {
+    // Black Hole 3D Model
+    const blackholeContainer = document.getElementById('blackhole-container');
+    const blackholeScene = new THREE.Scene();
+    const blackholeCamera = new THREE.PerspectiveCamera(75, blackholeContainer.clientWidth / blackholeContainer.clientHeight, 0.1, 1000);
+    const blackholeRenderer = new THREE.WebGLRenderer({ alpha: true });
 
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    container.appendChild(renderer.domElement);
+    blackholeRenderer.setSize(blackholeContainer.clientWidth, blackholeContainer.clientHeight);
+    blackholeContainer.appendChild(blackholeRenderer.domElement);
 
-    const geometry = new THREE.SphereGeometry(1, 32, 32);
-    const material = new THREE.MeshBasicMaterial({ color: color });
-    const sphere = new THREE.Mesh(geometry, material);
-    scene.add(sphere);
+    const geometry = new THREE.TorusGeometry(5, 2, 16, 100);
+    const material = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true });
+    const torus = new THREE.Mesh(geometry, material);
 
-    camera.position.z = 5;
+    blackholeScene.add(torus);
 
-    function animate() {
-        requestAnimationFrame(animate);
-        sphere.rotation.x += 0.01;
-        sphere.rotation.y += 0.01;
-        renderer.render(scene, camera);
+    blackholeCamera.position.z = 20;
+
+    function animateBlackhole() {
+        requestAnimationFrame(animateBlackhole);
+
+        torus.rotation.x += 0.01;
+        torus.rotation.y += 0.01;
+
+        blackholeRenderer.render(blackholeScene, blackholeCamera);
     }
-    animate();
-}
 
-create3DObject('blackhole-3d', 0x000000);
-create3DObject('neutronstar-3d', 0xffffff);
+    animateBlackhole();
 
-// Image upload and display
-document.getElementById('imageUpload').addEventListener('change', function (event) {
-    const files = event.target.files;
-    const gallery = document.getElementById('imageGallery');
-    gallery.innerHTML = '';
+    // Neutron Star 3D Model
+    const neutronstarContainer = document.getElementById('neutronstar-container');
+    const neutronstarScene = new THREE.Scene();
+    const neutronstarCamera = new THREE.PerspectiveCamera(75, neutronstarContainer.clientWidth / neutronstarContainer.clientHeight, 0.1, 1000);
+    const neutronstarRenderer = new THREE.WebGLRenderer({ alpha: true });
 
-    Array.from(files).forEach(file => {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            const img = document.createElement('img');
-            img.src = e.target.result;
-            gallery.appendChild(img);
-        };
-        reader.readAsDataURL(file);
-    });
-});
+    neutronstarRenderer.setSize(neutronstarContainer.clientWidth, neutronstarContainer.clientHeight);
+    neutronstarContainer.appendChild(neutronstarRenderer.domElement);
 
-// Modal functionality for clickable images
-const images = document.querySelectorAll('.clickable-image');
-const modal = document.getElementById('modal');
-const modalContent = document.getElementById('modal-info');
-const closeModal = document.querySelector('.close');
+    const starGeometry = new THREE.SphereGeometry(5, 32, 32);
+    const starMaterial = new THREE.MeshBasicMaterial({ color: 0xffd700, wireframe: true });
+    const star = new THREE.Mesh(starGeometry, starMaterial);
 
-images.forEach(image => {
-    image.addEventListener('click', () => {
-        modalContent.textContent = image.getAttribute('data-info');
-        modal.style.display = 'flex';
-    });
-});
+    neutronstarScene.add(star);
 
-closeModal.addEventListener('click', () => {
-    modal.style.display = 'none';
-});
+    neutronstarCamera.position.z = 20;
 
-window.addEventListener('click', (event) => {
-    if (event.target == modal) {
-        modal.style.display = 'none';
+    function animateNeutronStar() {
+        requestAnimationFrame(animateNeutronStar);
+
+        star.rotation.x += 0.01;
+        star.rotation.y += 0.01;
+
+        neutronstarRenderer.render(neutronstarScene, neutronstarCamera);
     }
+
+    animateNeutronStar();
 });
+
