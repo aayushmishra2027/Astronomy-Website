@@ -54,5 +54,44 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     animateNeutronStar();
-});
+    // Image Upload Handling
+    const fileInput = document.getElementById('fileInput');
+    const uploadButton = document.getElementById('uploadButton');
+    const imagePreview = document.getElementById('imagePreview');
 
+    uploadButton.addEventListener('click', function() {
+        const files = fileInput.files;
+        if (files.length === 0) {
+            alert('Please select an image file.');
+            return;
+        }
+
+        const file = files[0];
+        const formData = new FormData();
+        formData.append('image', file);
+
+        fetch('http://localhost:3000/upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.url) {
+                const img = document.createElement('img');
+                img.src = data.url;
+                img.alt = 'Uploaded Image';
+                img.style.maxWidth = '200px';
+                img.style.borderRadius = '10px';
+                img.style.margin = '10px';
+
+                imagePreview.appendChild(img);
+            } else {
+                alert('File upload failed.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while uploading the file.');
+        });
+    });
+});
