@@ -1,0 +1,10 @@
+/your-project
+    /index.html
+    /styles.css
+    /script.js
+    /images
+        /blackhole1.jpg
+        /blackhole2.jpg
+        /neutronstar1.jpg
+        /neutronstar2.jpg
+        /stars.jpg
