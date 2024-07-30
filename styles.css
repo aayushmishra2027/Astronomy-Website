@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto', bahnschrift-semibold-condensed;
     color: white;
     background: url('images/stars.jpg') no-repeat center center fixed;
     background-size: cover;
